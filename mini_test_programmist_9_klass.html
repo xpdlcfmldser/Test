@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Мини-тест: подойдёт ли тебе программирование?</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #eef2ff, #f8fafc, #dbeafe);
+      min-height: 100vh;
+      color: #0f172a;
+    }
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .hero, .card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.12);
+    }
+    .hero { margin-bottom: 20px; }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .tag {
+      background: #4338ca;
+      color: white;
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+    .sub {
+      margin: 0;
+      color: #475569;
+      font-size: 18px;
+      line-height: 1.45;
+    }
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+      color: #64748b;
+      font-weight: 700;
+    }
+    .progress {
+      width: 100%;
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+    .bar {
+      height: 100%;
+      width: 0%;
+      background: #4f46e5;
+      transition: width .3s ease;
+    }
+    .question {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 18px;
+    }
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+    .option, .action {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      font-size: 18px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .option:hover, .action:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+      border-color: #818cf8;
+    }
+    .result-badge {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .result-title {
+      margin: 0 0 10px 0;
+      font-size: 32px;
+      font-weight: 800;
+    }
+    .result-text {
+      font-size: 20px;
+      line-height: 1.6;
+      color: #334155;
+    }
+    .score-box {
+      margin: 20px 0;
+      background: #f8fafc;
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .score-label { color: #64748b; }
+    .score-value {
+      margin-top: 6px;
+      font-size: 32px;
+      font-weight: 800;
+      color: #4338ca;
+    }
+    .note {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 16px;
+      background: #eef2ff;
+      color: #3730a3;
+      line-height: 1.55;
+      font-size: 17px;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .primary {
+      background: #4f46e5;
+      color: white;
+      border: 0;
+      max-width: 250px;
+    }
+    .secondary {
+      background: white;
+      color: #334155;
+      max-width: 250px;
+    }
+    .foot {
+      text-align: center;
+      margin-top: 16px;
+      color: #64748b;
+      font-size: 14px;
+    }
+    @media (max-width: 640px) {
+      h1 { font-size: 28px; }
+      .question { font-size: 24px; }
+      .result-title { font-size: 28px; }
+      .result-text { font-size: 18px; }
+      .primary, .secondary { max-width: none; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="row">
+        <div>
+          <h1>Мини-тест: подойдёт ли тебе программирование?</h1>
+          <p class="sub">Ответь на 7 вопросов и узнай, насколько тебе близок мир программирования и IT.</p>
+        </div>
+        <div class="tag">Для 9 класса</div>
+      </div>
+    </div>
+
+    <div class="card" id="app"></div>
+
+    <div class="foot">Профориентационный тест для школьников</div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: 'Когда у тебя что-то не получается, что ты чаще делаешь?',
+        options: [
+          { text: 'Пробую ещё раз и ищу другой способ', score: 2 },
+          { text: 'Могу попробовать, если кто-то подскажет', score: 1 },
+          { text: 'Быстро теряю интерес и бросаю', score: 0 }
+        ]
+      },
+      {
+        question: 'Насколько тебе интересно, как работают сайты, приложения и игры?',
+        options: [
+          { text: 'Очень интересно, хочется понять, как они устроены', score: 2 },
+          { text: 'Иногда интересно', score: 1 },
+          { text: 'Почти неинтересно', score: 0 }
+        ]
+      },
+      {
+        question: 'Как ты относишься к логическим задачам и головоломкам?',
+        options: [
+          { text: 'Люблю разбираться и искать решение', score: 2 },
+          { text: 'Иногда бывает интересно', score: 1 },
+          { text: 'Скорее не люблю', score: 0 }
+        ]
+      },
+      {
+        question: 'Если нужно внимательно искать ошибку, что тебе ближе?',
+        options: [
+          { text: 'Это даже интересно — хочется найти, где проблема', score: 2 },
+          { text: 'Могу, но без особого удовольствия', score: 1 },
+          { text: 'Очень быстро надоедает', score: 0 }
+        ]
+      },
+      {
+        question: 'Нравится ли тебе создавать что-то своё: идеи, проекты, решения?',
+        options: [
+          { text: 'Да, мне нравится придумывать и собирать что-то новое', score: 2 },
+          { text: 'Иногда нравится', score: 1 },
+          { text: 'Мне комфортнее пользоваться готовым', score: 0 }
+        ]
+      },
+      {
+        question: 'Что тебе ближе в учёбе и жизни?',
+        options: [
+          { text: 'Анализировать, сравнивать, искать закономерности', score: 2 },
+          { text: 'По-разному, зависит от ситуации', score: 1 },
+          { text: 'Действовать без долгих разборов', score: 0 }
+        ]
+      },
+      {
+        question: 'Если бы тебе предложили попробовать создать простую игру, сайт или бота, какая была бы реакция?',
+        options: [
+          { text: 'Круто, я бы попробовал(а)!', score: 2 },
+          { text: 'Возможно, если объяснят понятно', score: 1 },
+          { text: 'Скорее всего, это не моё', score: 0 }
+        ]
+      }
+    ];
+
+    let step = 0;
+    let score = 0;
+    const maxScore = questions.length * 2;
+    const app = document.getElementById('app');
+
+    function getResult(score) {
+      if (score >= 11) {
+        return {
+          badge: 'Высокий интерес и потенциал',
+          title: 'У тебя есть хорошие предпосылки к программированию 🚀',
+          text: 'Тебе могут подойти направления, где важны логика, интерес к технологиям, поиск решений и создание чего-то нового. Программирование вполне может стать для тебя подходящим направлением.',
+          note: 'Попробуй следующий шаг: Scratch, Python для начинающих, создание простых сайтов, мини-игр или чат-ботов.'
+        };
+      }
+      if (score >= 7) {
+        return {
+          badge: 'Есть база для старта',
+          title: 'У тебя есть интерес — стоит попробовать 💡',
+          text: 'Возможно, программирование тебе подойдёт, но лучше всего это понять через практику. Не обязательно любить всё сразу — иногда интерес появляется, когда начинаешь делать свои первые проекты.',
+          note: 'Тебе подойдут короткие и понятные форматы: визуальное программирование, простые сайты, интерактивные задания, командные IT-проекты.'
+        };
+      }
+      return {
+        badge: 'Нужна проба без давления',
+        title: 'Сейчас программирование может быть не самым очевидным выбором 🌱',
+        text: 'Это не значит, что у тебя не получится. Просто пока тебе могут быть ближе другие форматы или направления. Иногда интерес к IT появляется позже, когда находишь «свою» тему.',
+        note: 'Можно попробовать смежные направления: дизайн, цифровое творчество, монтаж, работа с контентом, UX/UI, медиа или базовые IT-инструменты.'
+      };
+    }
+
+    function restartQuiz() {
+      step = 0;
+      score = 0;
+      render();
+    }
+
+    function answer(optionScore) {
+      score += optionScore;
+      step += 1;
+      render();
+    }
+
+    function render() {
+      if (step < questions.length) {
+        const q = questions[step];
+        const progress = Math.round((step / questions.length) * 100);
+
+        app.innerHTML = `
+          <div class="topline">
+            <span>Вопрос ${step + 1} из ${questions.length}</span>
+            <span style="color:#4338ca">${progress}%</span>
+          </div>
+          <div class="progress"><div class="bar" style="width:${progress}%"></div></div>
+          <div class="question">${q.question}</div>
+          <div class="options">
+            ${q.options.map((opt, i) => `<button class="option" data-index="${i}">${opt.text}</button>`).join('')}
+          </div>
+        `;
+
+        document.querySelectorAll('.option').forEach((btn, i) => {
+          btn.addEventListener('click', () => answer(q.options[i].score));
+        });
+      } else {
+        const result = getResult(score);
+        app.innerHTML = `
+          <div class="result-badge">${result.badge}</div>
+          <div class="result-title">${result.title}</div>
+          <div class="result-text">${result.text}</div>
+          <div class="score-box">
+            <div class="score-label">Твой результат</div>
+            <div class="score-value">${score} из ${maxScore} баллов</div>
+          </div>
+          <div class="note">${result.note}</div>
+          <div class="actions">
+            <button class="action primary" id="restartBtn">Пройти ещё раз</button>
+            <button class="action secondary" id="printBtn">Сохранить / распечатать</button>
+          </div>
+        `;
+
+        document.getElementById('restartBtn').addEventListener('click', restartQuiz);
+        document.getElementById('printBtn').addEventListener('click', () => window.print());
+      }
+    }
+
+    render();
+  </script>
+</body>
+</html>
